@@ -5,6 +5,7 @@ from django.urls import resolve
 from lists.views import home_page
 from django.http import HttpRequest
 from lists.models import Item, List
+from list.forms import ItemForm
 
 class HomePageTest(TestCase):
 
@@ -23,6 +24,10 @@ class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
+
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm)
 
     def test_only_saves_items_when_is_necessary(self):
         self.client.get('/')
